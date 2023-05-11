@@ -6,7 +6,7 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 // ---------------------------------------- FUNCTION----------------------------------------
 
-function MyMap({ latitude, longitude }) {
+function MyMap({ latitude, longitude, handleChange, isChosen }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
@@ -14,14 +14,41 @@ function MyMap({ latitude, longitude }) {
   const [profile, setProfile] = useState("cycling");
   const [minutes, setMinutes] = useState(20);
   const [isochrone, setIsochrone] = useState(null);
-  const [pointsOfInterest, setPointsOfInterest] = useState(null);
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      types: "country,region,place,postcode,locality,neighborhood",
+    });
+
+    geocoder.addTo("#geocoder");
+
+    geocoder.on("result", (e) => {
+      handleChange(e.result);
+      console.log(e);
+    });
+
+    // Clear results container when search is cleared.
+    geocoder.on("clear", () => {});
+  }, []);
+
+  useEffect(() => {
+    const start = {
+      center: [latitude, longitude],
+      zoom: 2,
+      antialias: true,
+    };
+    const end = {
+      center: [latitude, longitude],
+      zoom: 11,
+      antialias: true,
+    };
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/thomaslonjon/clhgjollg01ec01p6clov3ebc",
-      center: [longitude, latitude],
-      zoom: 11,
+      ...start,
       antialias: true,
     });
 
@@ -51,7 +78,23 @@ function MyMap({ latitude, longitude }) {
         },
         "poi-label"
       );
+      // /////////////////////////////////////////////////////////////////////////
 
+      //   const geocoder = new MapboxGeocoder({
+      //     accessToken: mapboxgl.accessToken,
+      //     types: "country,region,place,postcode,locality,neighborhood",
+      //   });
+
+      //   geocoder.addTo("#geocoder");
+
+      //   geocoder.on("result", (e) => {
+      //     handleChange(e.result);
+      //     console.log(e);
+      //   });
+
+      //   // Clear results container when search is cleared.
+      //   geocoder.on("clear", () => {});
+      ////////////////////////////////////////////////////////////////////////////////
       fetch(
         `${urlBase}${profile}/${latitude},${longitude}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`,
         { method: "GET" }
@@ -63,37 +106,35 @@ function MyMap({ latitude, longitude }) {
         })
         .catch((err) => console.error(err));
 
-      fetch(
-        `https://api.opentripmap.com/0.1/en/places/radius?radius=5000&lon=${longitude}&lat=${latitude}&format=json&apikey=5ae2e3f221c38a28845f05b6014db662b4937670ab66a0e7ee51a583`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setPointsOfInterest(data.features);
-          map.current.addSource("pointsOfInterest", {
-            type: "geojson",
-            data: {
-              type: "FeatureCollection",
-              features: data.features,
-            },
+      map.current.flyTo({
+        center: [latitude, longitude],
+      });
+
+      if (isChosen) {
+        new mapboxgl.Marker()
+          .setLngLat([latitude, longitude])
+          .addTo(map.current);
+
+        let isAtStart = true;
+        const target = isAtStart ? end : start;
+        isAtStart = !isAtStart;
+
+        setTimeout(() => {
+          map.current.flyTo({
+            ...target, // Fly to the selected target
+            duration: 10000, // Animate over 60 seconds
+            essential: true, // This animation is considered essential with respect to prefers-reduced-motion
           });
-          map.current.addLayer({
-            id: "pointsOfInterestLayer",
-            type: "symbol",
-            source: "pointsOfInterest",
-            layout: {
-              "icon-image": "{icon}-15",
-              "icon-allow-overlap": true,
-            },
-          });
-        })
-        .catch((err) => console.error(err));
+        }, 3000);
+      }
     });
-  }, [latitude, longitude, minutes, profile]);
+  }, [latitude, longitude]);
 
   // ---------------------------------------- RETURN----------------------------------------
 
   return (
     <div>
+      <div id="geocoder"></div>
       <div className="map-container">
         <div className="map-container-wrapper">
           <div className="map-container-overlay">
@@ -101,7 +142,6 @@ function MyMap({ latitude, longitude }) {
           </div>
         </div>
       </div>
-      <div className="sidebar">Sidebar</div>
     </div>
   );
 }
@@ -111,4 +151,6 @@ export default MyMap;
 MyMap.propTypes = {
   longitude: PropTypes.number.isRequired,
   latitude: PropTypes.number.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  isChosen: PropTypes.bool.isRequired,
 };
