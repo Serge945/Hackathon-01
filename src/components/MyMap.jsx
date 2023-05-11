@@ -6,7 +6,7 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 // ---------------------------------------- FUNCTION----------------------------------------
 
-function MyMap({ latitude, longitude }) {
+function MyMap({ latitude, longitude, handleChange, isChosen }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
@@ -14,13 +14,41 @@ function MyMap({ latitude, longitude }) {
   const [profile, setProfile] = useState("cycling");
   const [minutes, setMinutes] = useState(20);
   const [isochrone, setIsochrone] = useState(null);
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      types: "country,region,place,postcode,locality,neighborhood",
+    });
+
+    geocoder.addTo("#geocoder");
+
+    geocoder.on("result", (e) => {
+      handleChange(e.result);
+      console.log(e);
+    });
+
+    // Clear results container when search is cleared.
+    geocoder.on("clear", () => {});
+  }, []);
+
+  useEffect(() => {
+    const start = {
+      center: [latitude, longitude],
+      zoom: 2,
+      antialias: true,
+    };
+    const end = {
+      center: [latitude, longitude],
+      zoom: 11,
+      antialias: true,
+    };
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/thomaslonjon/clhgjollg01ec01p6clov3ebc",
-      center: [latitude, longitude],
-      zoom: 11,
+      ...start,
       antialias: true,
     });
 
@@ -50,7 +78,23 @@ function MyMap({ latitude, longitude }) {
         },
         "poi-label"
       );
+      // /////////////////////////////////////////////////////////////////////////
 
+      //   const geocoder = new MapboxGeocoder({
+      //     accessToken: mapboxgl.accessToken,
+      //     types: "country,region,place,postcode,locality,neighborhood",
+      //   });
+
+      //   geocoder.addTo("#geocoder");
+
+      //   geocoder.on("result", (e) => {
+      //     handleChange(e.result);
+      //     console.log(e);
+      //   });
+
+      //   // Clear results container when search is cleared.
+      //   geocoder.on("clear", () => {});
+      ////////////////////////////////////////////////////////////////////////////////
       fetch(
         `${urlBase}${profile}/${latitude},${longitude}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`,
         { method: "GET" }
@@ -63,7 +107,27 @@ function MyMap({ latitude, longitude }) {
         })
         .catch((err) => console.error(err));
 
-      console.info("iso", isochrone);
+      map.current.flyTo({
+        center: [latitude, longitude],
+      });
+
+      if (isChosen) {
+        new mapboxgl.Marker()
+          .setLngLat([latitude, longitude])
+          .addTo(map.current);
+
+        let isAtStart = true;
+        const target = isAtStart ? end : start;
+        isAtStart = !isAtStart;
+
+        setTimeout(() => {
+          map.current.flyTo({
+            ...target, // Fly to the selected target
+            duration: 10000, // Animate over 60 seconds
+            essential: true, // This animation is considered essential with respect to prefers-reduced-motion
+          });
+        }, 3000);
+      }
     });
   }, [latitude, longitude, minutes, profile]);
 
@@ -71,6 +135,7 @@ function MyMap({ latitude, longitude }) {
 
   return (
     <div>
+      <div id="geocoder"></div>
       <div className="map-container">
         <div className="map-container-wrapper">
           <div className="map-container-overlay">
@@ -78,7 +143,6 @@ function MyMap({ latitude, longitude }) {
           </div>
         </div>
       </div>
-      <div className="sidebar">Sidebar</div>
     </div>
   );
 }
