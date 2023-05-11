@@ -1,3 +1,17 @@
+/* ---------------------------------Card------------------------------------- */
+
+.Card {
+  background-color: #f6ead1;
+  width: 550px;
+  border-radius: 30px;
+}
+
+.Card img {
+  padding: 2%;
+  height: 110px;
+  width: 175px;
+  border-radius: 30px;
+}
 /* ----------------------------------------------Root-------------------------------------------------- */
 * {
   box-sizing: border-box;

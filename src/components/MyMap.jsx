@@ -129,7 +129,7 @@ function MyMap({ latitude, longitude, handleChange, isChosen }) {
         }, 3000);
       }
     });
-  }, [latitude, longitude, minutes, profile]);
+  }, [latitude, longitude]);
 
   // ---------------------------------------- RETURN----------------------------------------
 
@@ -152,4 +152,6 @@ export default MyMap;
 MyMap.propTypes = {
   longitude: PropTypes.number.isRequired,
   latitude: PropTypes.number.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  isChosen: PropTypes.bool.isRequired,
 };
