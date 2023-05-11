@@ -14,12 +14,13 @@ function MyMap({ latitude, longitude }) {
   const [profile, setProfile] = useState("cycling");
   const [minutes, setMinutes] = useState(20);
   const [isochrone, setIsochrone] = useState(null);
+  const [pointsOfInterest, setPointsOfInterest] = useState(null);
 
   useEffect(() => {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/thomaslonjon/clhgjollg01ec01p6clov3ebc",
-      center: [latitude, longitude],
+      center: [longitude, latitude],
       zoom: 11,
       antialias: true,
     });
@@ -56,14 +57,36 @@ function MyMap({ latitude, longitude }) {
         { method: "GET" }
       )
         .then((response) => response.json())
-        //   .then((data) => console.info("data", data))
         .then((data) => {
           setIsochrone(data);
           map.current.getSource("iso").setData(data);
         })
         .catch((err) => console.error(err));
 
-      console.info("iso", isochrone);
+      fetch(
+        `https://api.opentripmap.com/0.1/en/places/radius?radius=5000&lon=${longitude}&lat=${latitude}&format=json&apikey=5ae2e3f221c38a28845f05b6014db662b4937670ab66a0e7ee51a583`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setPointsOfInterest(data.features);
+          map.current.addSource("pointsOfInterest", {
+            type: "geojson",
+            data: {
+              type: "FeatureCollection",
+              features: data.features,
+            },
+          });
+          map.current.addLayer({
+            id: "pointsOfInterestLayer",
+            type: "symbol",
+            source: "pointsOfInterest",
+            layout: {
+              "icon-image": "{icon}-15",
+              "icon-allow-overlap": true,
+            },
+          });
+        })
+        .catch((err) => console.error(err));
     });
   }, [latitude, longitude, minutes, profile]);
 
