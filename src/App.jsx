@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import MyMap from "./components/MyMap";
 import Card from "./components/Card";
+import Tiny from "./components/Tiny";
 
 function App() {
   const [location, setLocation] = useState(null);
@@ -29,6 +30,7 @@ function App() {
         />
       </div>
       <Card searchBar={searchBar} />
+      <Tiny />
     </>
   );
 }
