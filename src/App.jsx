@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import MyMap from "./components/MyMap";
+import Tiny from "./components/Tiny";
 
 function App() {
   const [location, setLocation] = useState(null);
@@ -25,6 +26,7 @@ function App() {
           isChosen={isChosen}
         />
       </div>
+      <Tiny />
     </>
   );
 }
