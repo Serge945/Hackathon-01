@@ -1,4 +1,3 @@
-
 /* ---------------------------------Card------------------------------------- */
 
 .Card {
@@ -23,8 +22,6 @@
 
 .App {
   text-align: center;
-  background-color: var(--colorBackGround);
-  font-family: "Racing Sans One";
   color: white;
 }
 
@@ -75,7 +72,7 @@ div.map.mapboxgl-map {
 .mapboxgl-ctrl-geocoder {
   min-width: 100%;
 }
-=======
+
 
 /* ----------------------------------------------Root-------------------------------------------------- */
 * {
@@ -138,4 +135,41 @@ div.map.mapboxgl-map {
 
 .mapboxgl-ctrl-geocoder {
   min-width: 100%;
+}
+
+/* ----------------------------------------------Slider-------------------------------------------------- */
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  border-radius: 1px;
+  background: #f6ead1;
+  outline: none;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #f6ead1;
+  cursor: pointer;
+}
+
+.textSlider {
+  color: #f6ead1;
+  font-size: 20px;
+  padding-bottom: 1%;
+}
+
+.sliderBox {
+  width: 40%;
+  padding-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
