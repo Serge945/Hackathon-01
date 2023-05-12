@@ -16,19 +16,19 @@ function MyMap({ latitude, longitude, handleChange, isChosen, rangeValue }) {
   const [location, setLocation] = useState(null);
 
   // -----------------------------------------Geocoder-------------------------------------
-  useEffect(() => {
-    const geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      types: "country,region,place,postcode,locality,neighborhood",
-    });
-    geocoder.addTo("#geocoder");
-    geocoder.on("result", (e) => {
-      handleChange(e.result);
-      console.log(e);
-    });
-    // Clear results container when search is cleared.
-    geocoder.on("clear", () => {});
-  }, []);
+  // useEffect(() => {
+  //   const geocoder = new MapboxGeocoder({
+  //     accessToken: mapboxgl.accessToken,
+  //     types: "country,region,place,postcode,locality,neighborhood",
+  //   });
+  //   geocoder.addTo("#geocoder");
+  //   geocoder.on("result", (e) => {
+  //     handleChange(e.result);
+  //     console.log(e);
+  //   });
+  //   // Clear results container when search is cleared.
+  //   geocoder.on("clear", () => {});
+  // }, []);
 
   // -----------------------------------------set Map-------------------------------------
   useEffect(() => {
@@ -122,7 +122,6 @@ function MyMap({ latitude, longitude, handleChange, isChosen, rangeValue }) {
 
   return (
     <div>
-      <div id="geocoder"></div>
       <div className="map-container">
         <div className="map-container-wrapper">
           <div className="map-container-overlay">
