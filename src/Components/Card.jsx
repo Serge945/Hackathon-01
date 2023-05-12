@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 
 function Card({ searchBar }) {
@@ -38,12 +39,6 @@ function Card({ searchBar }) {
 
   return (
     <div>
-      <input
-        type="text"
-        value={searchBar}
-        onChange={handleSearch}
-        placeholder="Recherche d'images"
-      />
       <div className="Card">
         {data.map((photo) => (
           <img key={photo.id} src={photo.webformatURL} alt={photo.user} />
@@ -54,3 +49,7 @@ function Card({ searchBar }) {
 }
 
 export default Card;
+
+Card.propTypes = {
+  searchBar: PropTypes.string.isRequired,
+};
