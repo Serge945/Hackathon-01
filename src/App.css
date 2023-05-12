@@ -1,15 +1,16 @@
 /* ---------------------------------Card------------------------------------- */
 
 .Card {
-  background-color: aquamarine;
-  width: 600px;
+  background-color: #f6ead1;
+  width: 550px;
+  border-radius: 30px;
 }
 
 .Card img {
   padding: 2%;
-  height: 100px;
+  height: 110px;
   width: 175px;
-  border-radius: 25%;
+  border-radius: 30px;
 }
 /* ----------------------------------------------Root-------------------------------------------------- */
 * {

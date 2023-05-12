@@ -1,10 +1,7 @@
-// eslint-disable-next-line no-unused-vars
-import React, { Component } from 'react'
-import Card from './Components/Card';
-import "./App.css"; 
-// import { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import MyMap from "./components/MyMap";
+import Card from "./components/Card";
 import Tiny from "./components/Tiny";
 
 function App() {
@@ -12,12 +9,14 @@ function App() {
   const [isChosen, setIsChosen] = useState(null);
   const [latitude, setLatitude] = useState(2.136888191793237);
   const [longitude, setLongitude] = useState(43.707299293319366);
+  const [searchBar, setSearchBar] = useState("sailing");
 
   const handleChange = (result) => {
     setLocation(result);
     setLatitude(result.center[0]);
     setLongitude(result.center[1]);
     setIsChosen(true);
+    setSearchBar(result.text);
   };
 
   return (
@@ -30,9 +29,10 @@ function App() {
           isChosen={isChosen}
         />
       </div>
-       <Card/>
-     </>
-  )
+      <Card searchBar={searchBar} />
+      <Tiny />
+    </>
+  );
 }
 
-export default App
+export default App;

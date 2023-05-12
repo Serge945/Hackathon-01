@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-function Card() {
+function Card({ searchBar }) {
   const [data, setData] = useState([]);
-  const [searchBar, setSearchBar] = useState('');
 
   let API_KEY = "36296940-5c9363f2715883ce9a4c16563";
 
@@ -24,10 +23,13 @@ function Card() {
           setData(result.hits);
           console.log(result.hits);
         } else {
-          console.log('An error occurred while fetching data:', response.status);
+          console.log(
+            "An error occurred while fetching data:",
+            response.status
+          );
         }
       } catch (error) {
-        console.log('An error occurred while fetching data:', error);
+        console.log("An error occurred while fetching data:", error);
       }
     };
 
@@ -36,17 +38,17 @@ function Card() {
 
   return (
     <div>
-        <input
-            type="text"
-            value={searchBar}
-            onChange={handleSearch}
-            placeholder="Recherche d'images"
-        />
-        <div className='Card'>
-            {data.map((photo) => (
-                <img key={photo.id} src={photo.webformatURL} alt={photo.user} />
-            ))}
-        </div>
+      <input
+        type="text"
+        value={searchBar}
+        onChange={handleSearch}
+        placeholder="Recherche d'images"
+      />
+      <div className="Card">
+        {data.map((photo) => (
+          <img key={photo.id} src={photo.webformatURL} alt={photo.user} />
+        ))}
+      </div>
     </div>
   );
 }
