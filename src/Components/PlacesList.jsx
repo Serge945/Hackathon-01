@@ -54,6 +54,13 @@ function PlacesList() {
     loadList(lon, lat);
   }
 
+  function handleBack() {
+    if (offset >= pageLength) {
+      setOffset(offset - pageLength);
+      loadList(lon, lat);
+    }
+  }
+
   function handlePlaceClick(id) {
     setSelectedPlace(id);
     apiGet(`xid/${id}`).then((data) => {
@@ -83,6 +90,7 @@ function PlacesList() {
               </li>
             ))}
           </ul>
+          {offset >= pageLength && <button onClick={handleBack}>Back</button>}
           {offset + places.length < count && (
             <button onClick={handleNext}>Next</button>
           )}
