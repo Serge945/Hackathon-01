@@ -31,9 +31,10 @@ function App() {
         />
       </div>
       <Card searchBar={searchBar} />
+      <Tiny />
 
       <div className="note">
-        <PlacesList /> Bihbijnojihbnojljbhionkjbihjo
+        <PlacesList />
       </div>
     </>
   );
