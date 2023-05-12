@@ -3,6 +3,7 @@ import "./App.css";
 import MyMap from "./components/MyMap";
 import Card from "./components/Card";
 import Tiny from "./components/Tiny";
+import PlacesList from "./components/PlacesList";
 
 function App() {
   const [location, setLocation] = useState(null);
@@ -30,7 +31,10 @@ function App() {
         />
       </div>
       <Card searchBar={searchBar} />
-      <Tiny />
+
+      <div className="note">
+        <PlacesList /> Bihbijnojihbnojljbhionkjbihjo
+      </div>
     </>
   );
 }

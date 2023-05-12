@@ -100,6 +100,7 @@ function MyMap({ latitude, longitude, handleChange, isChosen }) {
         { method: "GET" }
       )
         .then((response) => response.json())
+        //   .then((data) => console.info("data", data))
         .then((data) => {
           setIsochrone(data);
           map.current.getSource("iso").setData(data);
