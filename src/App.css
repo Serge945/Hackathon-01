@@ -1,34 +1,10 @@
-:root {
-  --colorBackGround: #46178f;
-  --colorButtons: #7841b5;
-  --colorButtonsDark: #2c0a72;
-  --colorButtonBright: #f57914;
-  --colorText: #ffffff;
-  --fontTitle: "Faster One";
-  --fontSubtitle: "Racing Sans One";
-  --shadow: 0px 6px 6px #000000;
-}
-
-/* ---------------------------------Card------------------------------------- */
-
-.Card {
-  background-color: #f6ead1;
-  width: 550px;
-  border-radius: 30px;
-}
-
-.Card img {
-  padding: 2%;
-  height: 110px;
-  width: 175px;
-  border-radius: 30px;
-}
 /* ----------------------------------------------Root-------------------------------------------------- */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   text-decoration: none;
+  font-family: "CarnetVoyage";
 }
 
 .App {
@@ -41,24 +17,38 @@ body {
   background-color: #83aa9d;
 }
 
+@font-face {
+  font-family: "CarnetVoyage";
+  src: url("../src/assets/fonts/CarnetVoyage.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "BethEllen-Regular";
+  src: url("../src/assets/fonts/BethEllen-Regular.ttf") format("truetype");
+}
+
 /* ----------------------------------------------Map-------------------------------------------------- */
 .mapdiv {
   width: 50vw;
+  padding-top: 3%;
+  
 }
 .map-container {
   position: relative;
   width: 100%;
-  height: 700px;
+  height: 900px;
   /* margin-left: auto;
   margin-right: auto; */
-  margin-bottom: 10%;
+  margin-bottom: 2%;
+  
 }
 
 .map-container-overlay {
   border-radius: 30px;
   overflow: hidden;
-  box-shadow: var(--shadow);
   margin-bottom: 10%;
+  box-shadow: 0px 6px 6px #000000;
+  
 }
 
 .mapboxgl-ctrl-bottom-left {
@@ -70,14 +60,33 @@ body {
 }
 
 div.map.mapboxgl-map {
-  height: 700px;
+  height: 900px;
 }
 
+/* ---------------------------------Card------------------------------------- */
+
+.Card {
+  background-color: #f6ead1;
+  width: 525px;
+  border-radius: 30px;
+  margin-bottom: 5%;
+  box-shadow: 0px 6px 6px #000000;
+
+}
+
+.Card img {
+  padding: 2%;
+  height: 110px;
+  width: 175px;
+  border-radius: 30px;
+}
 /* ----------------------------------------------geocoder-------------------------------------------------- */
 
 #geocoder {
   z-index: 1;
-  margin: 20px;
+  margin: 0 2% 5% 2%;
+  border-radius: 20px;
+  /* overflow: hidden; */
 }
 
 .mapboxgl-ctrl-geocoder {
@@ -112,6 +121,7 @@ div.map.mapboxgl-map {
   color: #f6ead1;
   font-size: 20px;
   padding-bottom: 1%;
+  text-align: center;
 }
 
 .sliderBox {
@@ -119,4 +129,97 @@ div.map.mapboxgl-map {
   padding-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* flex */
+
+.container{
+  display: flex;
+  flex-direction: row;
+  padding: 0 5% 0 0;
+}
+
+.flex{
+  display: flex;
+  flex-direction: column;
+  padding: 0 10% 5% 0;
+  margin-left: 10%;
+}
+
+.header img {
+  width: 150px;
+  margin-right: 5%;
+}
+
+.header{
+  display: flex;
+  flex-direction: row;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  padding: 2%;
+  align-items: center;
+}
+
+h1{
+  font-size: 60px;
+  line-height: 72px;
+  color: #f6ead1;
+  text-shadow: 0px 6px 6px #000000;
+}
+
+h2{
+  font-size: 40px;
+  color: #f6ead1;
+  line-height:48px;
+  text-shadow: 0px 6px 6px #000000;
+}
+
+h3{
+  color: #f6ead1;
+  text-align: center;
+  text-shadow: 0px 6px 6px #000000;
+}
+
+input.mapboxgl-ctrl-geocoder--input{
+  background-color: #f6ead1;
+  width: 515px;
+  border-radius: 20px;
+  box-shadow: 0px 6px 6px #000000;
+
+}
+
+div.mapboxgl-ctrl-geocoder mapboxgl-ctrl{
+  display: none;
+}
+
+.note{
+  background-color: #f6ead1;
+  border-radius: 30px;
+  padding: 5%;
+  margin: 0 0 2% 0;
+  box-shadow: 0px 6px 6px #000000;
+
+}
+
+.note li, button {
+  font-family: "BethEllen-Regular";
+  padding: 1%;
+  font-size: 16px;
+}
+
+.note p{
+  text-align: center;
+  padding-bottom: 4%;
+}
+
+.note button{
+  padding: 2%;
+  margin-top: 4%;
+  margin-right: 3%;
+  border-radius: 20px;
+  background-color: #83aa9d;
+}
+
+.nota Tiny{
+  display: none;
 }

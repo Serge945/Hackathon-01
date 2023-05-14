@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const apiKey = "5ae2e3f221c38a28845f05b6014db662b4937670ab66a0e7ee51a583";
 const pageLength = 5;
 
-function PlacesList() {
+function PlacesList({ searchBar }) {
   const [lon, setLon] = useState(null);
   const [lat, setLat] = useState(null);
   const [count, setCount] = useState(null);
@@ -17,10 +17,24 @@ function PlacesList() {
     ).then((response) => response.json());
   }
 
-  function handleSearch(event) {
-    event.preventDefault();
-    const name = event.target.elements.search.value;
-    apiGet("geoname", `name=${name}`).then((data) => {
+  // function handleSearch(event) {
+  //   event.preventDefault();
+  //   const name = event.target.elements.search.value;
+  //   apiGet("geoname", `name=${name}`).then((data) => {
+  //     if (data.status === "OK") {
+  //       setLon(data.lon);
+  //       setLat(data.lat);
+  //       setOffset(0);
+  //       setCount(null);
+  //       setSelectedPlace(null);
+  //       loadList(data.lon, data.lat);
+  //     } else {
+  //       alert("Place not found");
+  //     }
+  //   });
+  // }
+  useEffect(() => {
+    apiGet("geoname", `name=${searchBar}`).then((data) => {
       if (data.status === "OK") {
         setLon(data.lon);
         setLat(data.lat);
@@ -29,10 +43,10 @@ function PlacesList() {
         setSelectedPlace(null);
         loadList(data.lon, data.lat);
       } else {
-        alert("Place not found");
+        alert("Place not found&&&&&");
       }
     });
-  }
+  }, [searchBar]);
 
   function loadList(lon, lat) {
     apiGet(
@@ -40,7 +54,7 @@ function PlacesList() {
       `radius=1000&limit=${pageLength}&offset=${offset}&lon=${lon}&lat=${lat}&rate=2&format=json`
     ).then((data) => {
       setPlaces(data);
-      if (count === null) {
+      {
         apiGet(
           "radius",
           `radius=1000&limit=1&offset=0&lon=${lon}&lat=${lat}&rate=2&format=count`
@@ -70,16 +84,16 @@ function PlacesList() {
 
   return (
     <div>
-      <form onSubmit={handleSearch}>
+      {/* <form onSubmit={handleSearch}>
         <input type="text" name="search" placeholder="Search place" />
         <button type="submit">Search</button>
-      </form>
+      </form> */}
       {places.length > 0 && (
         <div>
           <p>
             Showing {offset + 1} to {offset + places.length} of {count} places
           </p>
-          <ul>
+          <ul className="list">
             {places.map((place) => (
               <li
                 key={place.xid}
