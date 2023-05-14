@@ -3,6 +3,7 @@ import "./App.css";
 import MyMap from "./components/MyMap";
 import Card from "./components/Card";
 import Slider from "./components/Slider";
+import PlacesList from "./Components/PlacesList";
 
 function App() {
   const [location, setLocation] = useState(null);
